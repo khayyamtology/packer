@@ -22,6 +22,21 @@ rm -f kubectl
 curl --silent --location "https://github.com/weaveworks/eksctl/releases/download/$(curl --silent "https://api.github.com/repos/weaveworks/eksctl/releases/latest" | jq -r .tag_name)/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
 sudo mv /tmp/eksctl /usr/local/bin
 
+# Install eksctl
+LATEST_VERSION=$(curl --silent "https://api.github.com/repos/weaveworks/eksctl/releases/latest" | jq -r .tag_name)
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/download/${LATEST_VERSION}/eksctl_Linux_amd64.tar.gz" -o /tmp/eksctl.tar.gz
+
+# Extract the binary and move it to /usr/local/bin
+tar -xzf /tmp/eksctl.tar.gz -C /tmp
+sudo mv /tmp/eksctl /usr/local/bin
+
+# Ensure the binary has execution permissions
+chmod +x /usr/local/bin/eksctl
+
+# Cleanup
+rm -f /tmp/eksctl.tar.gz
+
+
 # Install Helm
 curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
